@@ -56,3 +56,10 @@ export function escalationMetrics(items: ScoredItem[]): EscalationMetrics {
     recall: needsHuman.length === 0 ? 0 : truePositives / needsHuman.length,
   }
 }
+
+// A citation counts only if the agent cited something and every cited page is in
+// the hand-labeled supporting set. Citing an unrelated page is not "close enough".
+export function citationCorrect(citedPages: string[], goldPages: string[]): boolean {
+  if (citedPages.length === 0) return false
+  return citedPages.every((page) => goldPages.includes(page))
+}

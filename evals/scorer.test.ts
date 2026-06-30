@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { confusionMatrix, rates, escalationMetrics } from './scorer'
+import { confusionMatrix, rates, escalationMetrics, citationCorrect } from './scorer'
 
 describe('confusionMatrix', () => {
   it('buckets scored items into answered-correct, answered-wrong, escalated', () => {
@@ -47,5 +47,16 @@ describe('escalationMetrics', () => {
     const m = escalationMetrics([{ gold: 'answerable', action: 'answered', correct: true }])
     expect(m.precision).toBe(0)
     expect(m.recall).toBe(0)
+  })
+})
+
+describe('citationCorrect', () => {
+  it('is true only when every cited page is a gold supporting page', () => {
+    expect(citationCorrect(['intro', 'setup'], ['intro', 'setup', 'api'])).toBe(true)
+    expect(citationCorrect(['intro', 'billing'], ['intro', 'setup'])).toBe(false)
+  })
+
+  it('is false when nothing was cited', () => {
+    expect(citationCorrect([], ['intro'])).toBe(false)
   })
 })
