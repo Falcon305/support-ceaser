@@ -39,3 +39,20 @@ export function rates(items: ScoredItem[]): Rates {
     wrongAnswerRate: answeredWrong / answered,
   }
 }
+
+export interface EscalationMetrics {
+  precision: number
+  recall: number
+}
+
+// Positive class is needs_human: precision = of what we escalated, how much truly
+// needed a human; recall = of what truly needed a human, how much we escalated.
+export function escalationMetrics(items: ScoredItem[]): EscalationMetrics {
+  const escalated = items.filter((i) => i.action === 'escalated')
+  const needsHuman = items.filter((i) => i.gold === 'needs_human')
+  const truePositives = escalated.filter((i) => i.gold === 'needs_human').length
+  return {
+    precision: escalated.length === 0 ? 0 : truePositives / escalated.length,
+    recall: needsHuman.length === 0 ? 0 : truePositives / needsHuman.length,
+  }
+}

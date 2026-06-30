@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { confusionMatrix, rates } from './scorer'
+import { confusionMatrix, rates, escalationMetrics } from './scorer'
 
 describe('confusionMatrix', () => {
   it('buckets scored items into answered-correct, answered-wrong, escalated', () => {
@@ -28,5 +28,24 @@ describe('rates', () => {
     const r = rates([{ gold: 'needs_human', action: 'escalated' }])
     expect(r.coverage).toBe(0)
     expect(r.wrongAnswerRate).toBe(0)
+  })
+})
+
+describe('escalationMetrics', () => {
+  it('treats needs-human as the positive class', () => {
+    const m = escalationMetrics([
+      { gold: 'needs_human', action: 'escalated' },
+      { gold: 'needs_human', action: 'answered', correct: false },
+      { gold: 'answerable', action: 'escalated' },
+      { gold: 'answerable', action: 'answered', correct: true },
+    ])
+    expect(m.precision).toBeCloseTo(0.5)
+    expect(m.recall).toBeCloseTo(0.5)
+  })
+
+  it('returns zero precision with no escalations and zero recall with no needs-human', () => {
+    const m = escalationMetrics([{ gold: 'answerable', action: 'answered', correct: true }])
+    expect(m.precision).toBe(0)
+    expect(m.recall).toBe(0)
   })
 })
