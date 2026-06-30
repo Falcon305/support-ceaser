@@ -43,6 +43,17 @@ Early. The scorer and the eval runner (`pnpm eval`) are built and tested — fee
 scored items and it prints the confusion matrix and rates. The retrieval and answer
 loop (multi-provider, via the Vercel AI SDK), the dataset, and the judge come next.
 
+## Models
+
+Provider-agnostic via the Vercel AI SDK — pick a model with a `provider:model` spec:
+
+- `anthropic:claude-sonnet-4`, `openai:gpt-4o`, `deepseek:deepseek-chat`
+- `compatible:<model>` for any OpenAI-compatible endpoint (Qwen, Moonshot, Zhipu,
+  Groq, OpenRouter) via `OPENAI_COMPATIBLE_BASE_URL`
+- `ollama:<model>` to run locally for free, no key
+
+Set the matching key in `.env.local` (see `.env.example`).
+
 ## Prior art
 
 Builds on existing work in selective prediction and RAG evaluation (Ragas, TruLens,
