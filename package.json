@@ -25,6 +25,7 @@
     "@ai-sdk/deepseek": "^3.0.2",
     "@ai-sdk/openai": "^4.0.4",
     "@ai-sdk/openai-compatible": "^3.0.2",
-    "ai": "^7.0.9"
+    "ai": "^7.0.9",
+    "zod": "^4.4.3"
   }
 }

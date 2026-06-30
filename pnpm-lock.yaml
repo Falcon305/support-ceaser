@@ -23,6 +23,9 @@ importers:
       ai:
         specifier: ^7.0.9
         version: 7.0.9(zod@4.4.3)
+      zod:
+        specifier: ^4.4.3
+        version: 4.4.3
     devDependencies:
       '@types/node':
         specifier: ^26.0.1
