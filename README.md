@@ -91,8 +91,25 @@ end-to-end harness over one real product's docs.
 pnpm install
 pnpm test          # unit tests — the deterministic CI gate
 pnpm ingest        # docs.json -> chunked corpus.json
-pnpm eval          # replay a fixtures file -> report (no model needed)
+pnpm demo          # run the whole chain over the sample data, no model needed
+pnpm eval          # replay a fixtures file -> report
 pnpm eval:live     # run the agent over the dataset with a real model
+```
+
+`pnpm demo` runs retrieve → gate → judge → score on the bundled sample data with
+deterministic stand-ins for the LLM, so you can see the pipeline end-to-end with zero
+setup:
+
+```
+support-ceaser eval — 8 items
+
+  answered ✓   4
+  answered ✗   0
+  escalated    4
+
+  coverage             50.0%
+  wrong-answer rate    0.0%
+  escalation           precision 0.75  recall 1.00
 ```
 
 For `eval:live` with no API key, run a model locally for free:
