@@ -1,0 +1,44 @@
+[
+  {
+    "question": "How do I install the posthog browser library?",
+    "gold": "answerable",
+    "goldAnswer": "Run npm install posthog-js, then call posthog.init with your project API key.",
+    "goldPages": ["install"]
+  },
+  {
+    "question": "How do I send a custom event?",
+    "gold": "answerable",
+    "goldAnswer": "Use posthog.capture with an event name and an optional properties object.",
+    "goldPages": ["capture"]
+  },
+  {
+    "question": "How do I check whether a feature flag is enabled?",
+    "gold": "answerable",
+    "goldAnswer": "Call posthog.isFeatureEnabled with the flag key.",
+    "goldPages": ["feature-flags"]
+  },
+  {
+    "question": "How do I stop attributing events to a user after they log out?",
+    "gold": "answerable",
+    "goldAnswer": "Call posthog.reset on logout.",
+    "goldPages": ["identify"]
+  },
+  {
+    "question": "How do I turn on session replay?",
+    "gold": "answerable",
+    "goldAnswer": "Enable recording in project settings and set disable_session_recording to false.",
+    "goldPages": ["session-replay"]
+  },
+  {
+    "question": "How do I set up SAML single sign-on for my enterprise organization?",
+    "gold": "needs_human"
+  },
+  {
+    "question": "Can I get a refund on my annual billing plan?",
+    "gold": "needs_human"
+  },
+  {
+    "question": "Why was my account suspended yesterday?",
+    "gold": "needs_human"
+  }
+]

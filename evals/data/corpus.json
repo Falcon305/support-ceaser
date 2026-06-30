@@ -1,0 +1,27 @@
+[
+  {
+    "page": "install",
+    "title": "Install posthog-js",
+    "text": "Install the posthog-js library with npm install posthog-js. Then initialize it by calling posthog.init with your project API key and host. Once initialized the library starts sending events from your web app."
+  },
+  {
+    "page": "capture",
+    "title": "Capture events",
+    "text": "Send a custom event with posthog.capture, passing an event name and an optional properties object. Autocapture records clicks and pageviews automatically when you enable it during init."
+  },
+  {
+    "page": "feature-flags",
+    "title": "Feature flags",
+    "text": "Check a feature flag with posthog.isFeatureEnabled and the flag key. Flags can be boolean or multivariate. Use posthog.onFeatureFlags to run code once flags have loaded for the current user."
+  },
+  {
+    "page": "identify",
+    "title": "Identify users",
+    "text": "Call posthog.identify with a distinct id to associate events with a known user. Call posthog.reset on logout so later events are not attributed to the previous person. Set person properties with the second argument."
+  },
+  {
+    "page": "session-replay",
+    "title": "Session replay",
+    "text": "Enable session replay by turning on recording in your project settings and setting disable_session_recording to false. Replays capture the DOM rather than video, so they are lightweight, and privacy controls can mask sensitive inputs."
+  }
+]

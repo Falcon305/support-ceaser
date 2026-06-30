@@ -7,7 +7,9 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
-    "eval": "tsx evals/run.ts"
+    "ingest": "tsx scripts/ingest.ts",
+    "eval": "tsx evals/run.ts",
+    "eval:live": "tsx evals/run-live.ts"
   },
   "devDependencies": {
     "@types/node": "^26.0.1",
