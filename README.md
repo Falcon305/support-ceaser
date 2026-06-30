@@ -39,8 +39,9 @@ held-out set.
 
 ## Status
 
-Early. The scorer — the metrics math the headline number depends on — is built and
-tested. The retrieval and answer loop, the dataset, and the judge come next.
+Early. The scorer and the eval runner (`pnpm eval`) are built and tested — feed it
+scored items and it prints the confusion matrix and rates. The retrieval and answer
+loop (multi-provider, via the Vercel AI SDK), the dataset, and the judge come next.
 
 ## Prior art
 
@@ -52,5 +53,20 @@ end-to-end harness over one real product's docs.
 
 ```
 pnpm install
-pnpm test
+pnpm test          # unit tests
+pnpm eval          # score a fixtures file and print the report
+```
+
+`pnpm eval` over the bundled example prints:
+
+```
+support-ceaser eval — 6 items
+
+  answered ✓   2
+  answered ✗   2
+  escalated    2
+
+  coverage             66.7%
+  wrong-answer rate    50.0%
+  escalation           precision 1.00  recall 0.67
 ```
