@@ -37,11 +37,36 @@ CI runs in two parts: a fast deterministic job (scorer unit tests over cached
 fixtures — the badge above) and a separate live job that runs the agent on the
 held-out set.
 
+## How it works
+
+```
+docs ──ingest──▶ corpus (chunks)
+
+question ─▶ retrieve (top-k + score) ─▶ draft answer + self-grade (LLM)
+                     │                            │
+                     └──────────── blend ─────────┘
+                                     │
+                       confidence < cutoff ?  ──yes──▶ escalate
+                                     │ no
+                                     ▼
+                              answer + citation
+
+eval: judge vs gold ─▶ confusion matrix + rates ─▶ regression gate
+```
+
+- `src/retriever.ts` — lexical retrieval (a real embedding retriever drops in behind the
+  same interface)
+- `src/agent.ts` — the trust loop; `src/blend.ts` — escalate on the weaker of retrieval
+  relevance and the model's self-grade
+- `src/draft.ts`, `evals/judge.ts` — the provider-agnostic LLM calls
+- `evals/scorer.ts` — the metrics; `evals/baseline.ts` — the regression gate
+
 ## Status
 
-Early. The scorer and the eval runner (`pnpm eval`) are built and tested — feed it
-scored items and it prints the confusion matrix and rates. The retrieval and answer
-loop (multi-provider, via the Vercel AI SDK), the dataset, and the judge come next.
+The pipeline is built end-to-end and tested: ingest → retrieve → answer (gated) → judge
+→ score → regression gate. It runs offline with a local Ollama model, or against any
+provider key. Next: grow the curated dataset to the full answerable / needs-human split
+and lock a baseline number.
 
 ## Models
 
@@ -64,8 +89,17 @@ end-to-end harness over one real product's docs.
 
 ```
 pnpm install
-pnpm test          # unit tests
-pnpm eval          # score a fixtures file and print the report
+pnpm test          # unit tests — the deterministic CI gate
+pnpm ingest        # docs.json -> chunked corpus.json
+pnpm eval          # replay a fixtures file -> report (no model needed)
+pnpm eval:live     # run the agent over the dataset with a real model
+```
+
+For `eval:live` with no API key, run a model locally for free:
+
+```
+ollama pull llama3.2:1b
+MODEL=ollama:llama3.2:1b pnpm eval:live
 ```
 
 `pnpm eval` over the bundled example prints:
