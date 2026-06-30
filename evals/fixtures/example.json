@@ -1,0 +1,8 @@
+[
+  { "gold": "answerable", "action": "answered", "correct": true },
+  { "gold": "answerable", "action": "answered", "correct": true },
+  { "gold": "answerable", "action": "answered", "correct": false },
+  { "gold": "needs_human", "action": "escalated" },
+  { "gold": "needs_human", "action": "escalated" },
+  { "gold": "needs_human", "action": "answered", "correct": false }
+]
