@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { confusionMatrix, rates, escalationMetrics, citationCorrect } from './scorer'
+import { confusionMatrix, rates, escalationMetrics, citationCorrect, score } from './scorer'
 
 describe('confusionMatrix', () => {
   it('buckets scored items into answered-correct, answered-wrong, escalated', () => {
@@ -58,5 +58,20 @@ describe('citationCorrect', () => {
 
   it('is false when nothing was cited', () => {
     expect(citationCorrect([], ['intro'])).toBe(false)
+  })
+})
+
+describe('score', () => {
+  it('combines the matrix, rates, and escalation metrics into one report', () => {
+    const report = score([
+      { gold: 'answerable', action: 'answered', correct: true },
+      { gold: 'answerable', action: 'answered', correct: false },
+      { gold: 'needs_human', action: 'escalated' },
+      { gold: 'needs_human', action: 'answered', correct: false },
+    ])
+    expect(report.n).toBe(4)
+    expect(report.matrix).toEqual({ answeredCorrect: 1, answeredWrong: 2, escalated: 1 })
+    expect(report.coverage).toBeCloseTo(0.75)
+    expect(report.escalation.recall).toBeCloseTo(0.5)
   })
 })

@@ -63,3 +63,22 @@ export function citationCorrect(citedPages: string[], goldPages: string[]): bool
   if (citedPages.length === 0) return false
   return citedPages.every((page) => goldPages.includes(page))
 }
+
+export interface ScoreReport {
+  n: number
+  matrix: ConfusionMatrix
+  coverage: number
+  wrongAnswerRate: number
+  escalation: EscalationMetrics
+}
+
+export function score(items: ScoredItem[]): ScoreReport {
+  const { coverage, wrongAnswerRate } = rates(items)
+  return {
+    n: items.length,
+    matrix: confusionMatrix(items),
+    coverage,
+    wrongAnswerRate,
+    escalation: escalationMetrics(items),
+  }
+}
