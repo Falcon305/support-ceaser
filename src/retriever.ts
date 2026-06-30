@@ -9,12 +9,16 @@ export interface Retriever {
   retrieve(query: string, k: number): Retrieved[]
 }
 
+const STOPWORDS = new Set(
+  'a an the how do does i me my you your to of in on for with and or is are be can what why this that it'.split(' '),
+)
+
 const tokenize = (text: string): Set<string> =>
   new Set(
     text
       .toLowerCase()
       .split(/[^a-z0-9]+/)
-      .filter(Boolean),
+      .filter((t) => t && !STOPWORDS.has(t)),
   )
 
 // Offline default: score a chunk by the fraction of distinct query terms it contains.
