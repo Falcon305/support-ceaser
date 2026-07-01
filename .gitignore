@@ -7,5 +7,6 @@ dist/
 *.log
 .DS_Store
 
-# fetched PostHog docs — pulled at build time, not vendored into the repo
+# fetched PostHog docs/issues — pulled at build time, not vendored into the repo
 evals/data/*.fetched.json
+evals/data/*.seed.json

@@ -8,6 +8,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "fetch-docs": "tsx scripts/fetch-docs.ts",
+    "fetch-issues": "tsx scripts/fetch-issues.ts",
     "ingest": "tsx scripts/ingest.ts",
     "demo": "tsx evals/demo.ts",
     "eval": "tsx evals/run.ts",
