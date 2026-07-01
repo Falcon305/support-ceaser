@@ -19,7 +19,8 @@ escalation correctness on a labeled set.
 
 ## How it's evaluated
 
-The eval set is built from closed PostHog issues, split into two buckets:
+The eval set (a small hand-written sample today; the full set gets curated from closed
+PostHog issues) splits into two buckets:
 
 - **answerable-from-docs** — tests answer accuracy and citation correctness.
 - **needs-human** — tests escalation. Labeled *blind to the agent's retrieval score*,
@@ -60,6 +61,9 @@ eval: judge vs gold ─▶ confusion matrix + rates ─▶ regression gate
   relevance and the model's self-grade
 - `src/draft.ts`, `evals/judge.ts` — the provider-agnostic LLM calls
 - `evals/scorer.ts` — the metrics; `evals/baseline.ts` — the regression gate
+
+See [ARCHITECTURE.md](ARCHITECTURE.md) for the module-by-module breakdown, the trust-gate
+logic, and the full eval methodology.
 
 ## Status
 
