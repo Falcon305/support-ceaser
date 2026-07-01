@@ -19,8 +19,8 @@ try {
 const MODEL = process.env.MODEL ?? 'ollama:llama3.2'
 const JUDGE_MODEL = process.env.JUDGE_MODEL ?? MODEL
 
-const corpus = loadCorpus('evals/data/corpus.json')
-const dataset: EvalItem[] = JSON.parse(readFileSync('evals/data/dataset.json', 'utf8'))
+const corpus = loadCorpus(process.env.CORPUS ?? 'evals/data/corpus.json')
+const dataset: EvalItem[] = JSON.parse(readFileSync(process.env.DATASET ?? 'evals/data/dataset.json', 'utf8'))
 
 const retriever = lexicalRetriever(corpus)
 const draft = modelDrafter(MODEL)

@@ -10,8 +10,8 @@ import { formatReport } from './report'
 // deterministic stand-ins (the drafter answers from the top chunk; the judge checks
 // lexical overlap with the gold answer) so you can see the pipeline work end-to-end with
 // zero API cost. For real answer quality, use `pnpm eval:live` with a model.
-const corpus = loadCorpus('evals/data/corpus.json')
-const dataset: EvalItem[] = JSON.parse(readFileSync('evals/data/dataset.json', 'utf8'))
+const corpus = loadCorpus(process.env.CORPUS ?? 'evals/data/corpus.json')
+const dataset: EvalItem[] = JSON.parse(readFileSync(process.env.DATASET ?? 'evals/data/dataset.json', 'utf8'))
 const retriever = lexicalRetriever(corpus)
 
 const draft = async (_q: string, chunks: Chunk[]) => {
