@@ -70,11 +70,16 @@ rewrite — `answer()` never imports a model or a provider.
 
 | Command | File | Needs a model? |
 |---------|------|----------------|
+| `pnpm fetch-docs` | `scripts/fetch-docs.ts` | no (fetches PostHog Markdown) |
+| `pnpm fetch-issues` | `scripts/fetch-issues.ts` | no (fetches a repo's closed issues) |
 | `pnpm ingest` | `scripts/ingest.ts` | no |
 | `pnpm demo` | `evals/demo.ts` | no (deterministic stand-ins) |
 | `pnpm eval` | `evals/run.ts` | no (replays a fixtures file) |
 | `pnpm eval:live` | `evals/run-live.ts` | yes |
 | `pnpm test` | vitest | no |
+
+`src/posthog.ts` (`docUrlsFromIndex`, `docFromMarkdown`) and `src/issues.ts`
+(`looksLikeQuestion`, `issueToSeed`) are the pure parsers behind the two fetchers.
 
 ## The trust gate
 
@@ -123,9 +128,13 @@ to `answer()`. Nothing else changes — the agent only knows the interface. When
 re-validate the needs-human labels only if you had labeled them against retrieval (we did
 not; they are human-blind, so they hold).
 
-**Grow the dataset.** `evals/data/dataset.json` is the eval set (currently a small sample).
+**Grow the dataset.** `evals/data/dataset.json` is the eval set (a doc-grounded sample).
 Add labeled `EvalItem`s; split into dev/test; lock a `evals/baseline.json` from a real
-`eval:live` run.
+`eval:live` run. Where the questions come from matters: PostHog's support Q&A is not in
+GitHub issues (they are PRs and eng tasks — verified: no question-shaped issues, no
+Discussions), so its dataset is authored from the docs. `pnpm fetch-issues` still helps
+for products whose issues *are* user questions; it writes an unlabeled seed you then
+label human-blind.
 
 ## Testing strategy
 

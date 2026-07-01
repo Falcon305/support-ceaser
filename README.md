@@ -19,8 +19,7 @@ escalation correctness on a labeled set.
 
 ## How it's evaluated
 
-The eval set (a small hand-written sample today; the full set gets curated from closed
-PostHog issues) splits into two buckets:
+The eval set (a doc-grounded sample today) splits into two buckets:
 
 - **answerable-from-docs** — tests answer accuracy and citation correctness.
 - **needs-human** — tests escalation. Labeled *blind to the agent's retrieval score*,
@@ -83,6 +82,17 @@ Provider-agnostic via the Vercel AI SDK — pick a model with a `provider:model`
 
 Set the matching key in `.env.local` (see `.env.example`).
 
+## Data
+
+- **Docs** are fetched from PostHog at build time (`pnpm fetch-docs` reads their
+  `llms.txt` index and pulls each page as Markdown), not vendored into this repo.
+- **The eval dataset** is doc-grounded questions labeled by hand — answerable ones tied
+  to real doc pages, needs-human ones deliberately outside the docs.
+- A generic `pnpm fetch-issues <owner/repo>` seeds unlabeled questions from a repo's
+  closed issues. Note: PostHog's own support Q&A does not live in GitHub issues (they are
+  PRs and eng tasks), so PostHog's dataset is authored from the docs rather than scraped
+  from issues.
+
 ## Prior art
 
 Builds on existing work in selective prediction and RAG evaluation (Ragas, TruLens,
@@ -94,9 +104,10 @@ end-to-end harness over one real product's docs.
 ```
 pnpm install
 pnpm test          # unit tests — the deterministic CI gate
-pnpm ingest        # docs.json -> chunked corpus.json
 pnpm demo          # run the whole chain over the sample data, no model needed
 pnpm eval          # replay a fixtures file -> report
+pnpm fetch-docs    # pull real PostHog docs (markdown) -> docs.fetched.json
+pnpm ingest        # docs -> chunked corpus.json
 pnpm eval:live     # run the agent over the dataset with a real model
 ```
 
@@ -105,16 +116,20 @@ deterministic stand-ins for the LLM, so you can see the pipeline end-to-end with
 setup:
 
 ```
-support-ceaser eval — 8 items
+support-ceaser eval — 16 items
 
-  answered ✓   4
+  answered ✓   7
   answered ✗   0
-  escalated    4
+  escalated    9
 
-  coverage             50.0%
+  coverage             43.8%
   wrong-answer rate    0.0%
-  escalation           precision 0.75  recall 1.00
+  escalation           precision 0.67  recall 1.00
 ```
+
+To run over real docs: `pnpm fetch-docs` then
+`pnpm ingest evals/data/docs.fetched.json evals/data/corpus.fetched.json`, and point the
+eval at it with `CORPUS=evals/data/corpus.fetched.json`.
 
 For `eval:live` with no API key, run a model locally for free:
 
